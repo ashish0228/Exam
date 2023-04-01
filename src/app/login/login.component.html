@@ -1,0 +1,29 @@
+
+
+<div>
+    <form [formGroup]="loginForm" (ngSubmit)="saveLoginValue()">
+    <div>
+        <label>Email</label>
+        <input type="text" formControlName="email">
+        <div>
+            <span *ngIf="submit && loginForm.controls['email'].errors?.['required']">
+                Please Enter Email!
+            </span>
+            <span *ngIf="submit && loginForm.controls['email'].errors?.['email']">
+                Please Enter Valid Email! 
+            </span>
+        </div>
+    </div>
+    <div>
+        <label>Password</label>
+        <input type="password" formControlName="password">
+        <span *ngIf="submit && loginForm.controls['password'].errors?.['required']">
+            Please Etner Password!
+        </span>
+    </div>
+    <div>
+        <button type="button" (click)="resetForm()">Reset</button>
+        <button type="submit">Login</button>
+    </div>
+    </form>
+</div>

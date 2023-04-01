@@ -1,0 +1,178 @@
+<div class="first">
+    <h3>Apply For Job Application</h3>
+
+<form [formGroup]="jobApplicationForm" (ngSubmit)="saveApplication()">
+    <div class="main">
+        <h4 class="w_100">Basic Details</h4>
+        <div class="form-control">
+            <label>Name</label>
+            <input type="text" formControlName="name">
+            <div>
+                <span *ngIf="submit && jobApplicationForm.controls['name'].errors?.['required']">
+                    Please Enter Name!
+                </span>
+            </div>
+        </div>
+        <div class="form-control"> 
+            <label>Email</label>
+            <input type="text" formControlName="email">
+            <div>
+                <span *ngIf="submit && jobApplicationForm.controls['email'].errors?.['required']">
+                    Please Enter Email!
+                </span>
+                <span *ngIf="submit && jobApplicationForm.controls['email'].errors?.['email']">
+                    Please Enter Valid Email! 
+                </span>
+            </div>
+        </div>
+        <div class="form-control">
+            <label>Address</label>
+            <textarea formControlName="address"></textarea>
+            <div>
+                <span *ngIf="submit && jobApplicationForm.controls['address'].errors?.['required']">
+                    Please Enter Address!
+                </span>
+            </div>
+        </div>
+
+        <div class="form-control">
+            <label>Gender</label>
+            <label>
+                <input type="radio" value="Male" formControlName="gender">
+                  <span>male</span>
+              </label>
+              <label>
+                <input type="radio" value="Female" formControlName="gender">
+                  <span>female</span>
+              </label>
+        </div>
+
+        <div class="form-control">
+            <label>Contact</label>
+            <input type="text" formControlName="contact">
+            <div>
+                <span *ngIf="submit && jobApplicationForm.controls['contact'].errors?.['required']">
+                    Please Enter Contact Number!
+                </span>
+                <span *ngIf="submit && jobApplicationForm.controls['contact'].errors?.['pattern']">
+                    Please Enter Valid Contact Number! 
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="main">
+        <h4 class="w_100">Education details</h4>
+        <div formGroupName="Graduation">
+            <div>
+                <h4 class="w_100">Graduation Details</h4>
+            </div>
+            <div class="form-control">
+                <label>University Name</label>
+                <input type="text" formControlName="board">
+                <div>
+                    <!-- <span *ngIf="submit && jobApplicationForm.controls['board'].errors?.['required']">
+                        Please Enter University Name!
+                    </span> -->
+                </div>
+            </div>
+            <div class="form-control"> 
+                <label>Year</label>
+                <input type="text" formControlName="year">
+                <div>
+                    <!-- <span *ngIf="submit && jobApplicationForm.controls['year'].errors?.['required']">
+                        Please Enter Year!
+                    </span> -->
+                </div>
+            </div>
+            <div class="form-control">
+                <label>CGPA / Percentage</label>
+                <input type="text" formControlName="percentage">
+                <div>
+                    <!-- <span *ngIf="submit && jobApplicationForm.controls['percentage'].errors?.['required']">
+                        Please Enter CGPA / Percentage!
+                    </span> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main">
+        <div>
+            <h4 class="w_100">Work Experience</h4>
+            <button (click)="addWorkExperience()">Add More Experience</button>
+        </div>
+        <div *ngFor="let w of workExperience; let i = index">
+            <div class="form-control">
+            <h5>Experience {{ i + 1}}</h5> 
+            <div>
+                <label>Company Name</label>
+                <input type="text" [(ngModel)]="workExperience[i].companyName" [ngModelOptions]="{standalone: true}">
+            </div>
+            <div>
+                <label>Designation Name</label>
+                <input type="text" [(ngModel)]="workExperience[i].designation" [ngModelOptions]="{standalone: true}">
+            </div>
+            <div>
+                <label>Start Working  Date</label>
+                <input type="date" [(ngModel)]="workExperience[i].startDate" [ngModelOptions]="{standalone: true}">
+            </div>
+            <div>
+                <label>Last Working Date</label>
+                <input type="date" [(ngModel)]="workExperience[i].endDate" [ngModelOptions]="{standalone: true}">
+            </div>
+            <button *ngIf="i !== 0" (click)="removeWorkExpp(i)">Remove WorkExperience</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="main">
+        <h4 class="w_100">Known Languages</h4>
+        <div>
+            <div *ngFor="let lan of language; let i = index">
+                <input type="checkbox" (click)="languageSelected($event, i)"> {{lan.langulageName}}
+                <input type="checkbox" (click)="selectLanguageOption($event, i, 'read')" [disabled]="lan.languageSelected"> Read
+                <input type="checkbox" (click)="selectLanguageOption($event, i, 'write')" [disabled]="lan.languageSelected"> Write
+                <input type="checkbox" (click)="selectLanguageOption($event, i, 'speak')" [disabled]="lan.languageSelected"> Speak
+            </div>
+        </div>
+    </div>
+
+    <div class="main">
+        <h4 class="w_100"> Technical Experience </h4>
+        <div formGroupName="technicalExp">
+            <div class="form-control">
+                <select formControlName="technologyName" >  
+                    <option disabled selected value="">Select Website</option> 
+                    <option *ngFor="let web of technologyName" value="{{web.value}}">{{web.name}}</option>  
+                </select>  
+                <!-- <pre>!!! {{ this.jobApplicationForm.value.technicalExp.technologyName | json }}</pre>
+                <label>
+                    <input type="radio" [disabled]="this.jobApplicationForm.value.technicalExp.technologyName == '' ? true : false"  formControlName="expType" value="Beginner">
+                      <span>Beginner</span>
+                  </label>
+                  <label>
+                    <input type="radio" [disabled]="this.jobApplicationForm.value.technicalExp.technologyName == '' ? true : false" value="Mediator" formControlName="expType">
+                      <span>Mediator</span>
+                  </label>
+                  <label>
+                    <input type="radio"  [attr.disabled]="this.jobApplicationForm.value.technicalExp.technologyName == '' ? true : false" value="Expert" formControlName="expType">
+                      <span>Expert</span>
+                  </label> -->
+
+                  <!-- <div>
+                    <span *ngIf="submit && jobApplicationForm.controls['expType'].errors?.['required']">
+                        Please Enter CGPA / Percentage!
+                    </span>
+                </div> -->
+            </div>
+
+        </div>
+    </div>
+
+
+    <div>
+        <button type="submit">Submit Application</button>
+        <button type="button">Reset</button>
+    </div>
+</form>
+</div>
